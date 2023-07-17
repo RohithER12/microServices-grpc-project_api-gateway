@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 
 	"github.com/RohithER12/api-gateway/pkg/product/pb"
@@ -21,6 +22,11 @@ func CreateProduct(ctx *gin.Context, c pb.ProductServiceClient) {
 		ctx.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
+	fmt.Println(
+		"name\t", body.Name, "\n",
+		"stock\t", body.Stock, "\n",
+		"Price\t", body.Price,
+	)
 
 	res, err := c.CreateProduct(context.Background(), &pb.CreateProductRequest{
 		Name:  body.Name,

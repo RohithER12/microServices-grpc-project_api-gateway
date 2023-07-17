@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -19,6 +20,7 @@ func InitAuthMiddleware(svc *ServiceClient) AuthMiddlewareConfig {
 
 func (c *AuthMiddlewareConfig) AuthRequired(ctx *gin.Context) {
 	authorization := ctx.Request.Header.Get("authorization")
+	fmt.Println(authorization, "\n----------")
 
 	if authorization == "" {
 		ctx.AbortWithStatus(http.StatusUnauthorized)
