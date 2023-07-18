@@ -13,6 +13,7 @@ func RegisterRoutes(r *gin.Engine, c *config.Config) *ServiceClient {
 
 	routes := r.Group("/auth")
 	routes.POST("/register", svc.Register)
+	routes.POST("/registerValidation", svc.RegisterOTPValidation)
 	routes.POST("/login", svc.Login)
 
 	return svc
@@ -24,4 +25,8 @@ func (svc *ServiceClient) Register(ctx *gin.Context) {
 
 func (svc *ServiceClient) Login(ctx *gin.Context) {
 	routes.Login(ctx, svc.Client)
+}
+
+func (svc *ServiceClient) RegisterOTPValidation(ctx *gin.Context) {
+	routes.RegisterOTPValidation(ctx, svc.Client)
 }
