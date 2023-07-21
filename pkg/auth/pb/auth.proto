@@ -9,6 +9,10 @@ service AuthService {
   rpc RegisterOTPValidation(RegisterOTPValidationRequest) returns (RegisterOTPValidationResponse) {}
   rpc Login(LoginRequest) returns (LoginResponse) {}
   rpc Validate(ValidateRequest) returns (ValidateResponse) {}
+  rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse){}
+  rpc ResetPasswordValidation(ResetPasswordValidationRequest) returns (ResetPasswordValidationResponse){}
+  rpc AddAddress(AddAddressRequest) returns (AddAddressResponse){}
+  rpc UserProfile(UserProfileRequest) returns (UserProfileResponse){}
 }
 
 // Register
@@ -38,6 +42,19 @@ message RegisterOTPValidationResponse {
   string error = 2;
 }
 
+// AddAddress
+message AddAddressRequest {
+  string doorNo = 1;
+  string city = 2;
+  string postalCodev =3;
+  string state = 4;
+  int64 userId = 5;
+}
+
+message AddAddressResponse {
+  int64 status = 1;
+  string error = 2;
+}
 
 // Login
 
@@ -50,6 +67,48 @@ message LoginResponse {
   int64 status = 1;
   string error = 2;
   string token = 3;
+}
+
+// ResetPassword
+
+message ResetPasswordRequest {
+  string phone_number =1;
+}
+
+message ResetPasswordResponse {
+  int64 status = 1;
+  string error = 2;
+  string otp_validation_key = 3;
+}
+
+// ResetPasswordValidation
+
+message ResetPasswordValidationRequest {
+  string key = 1;
+  string otp = 2;
+  string password = 3;
+}
+
+message ResetPasswordValidationResponse {
+  int64 status = 1;
+  string error = 2;
+}
+
+
+// UserProfile
+
+message UserProfileRequest {
+
+  int64 userId = 1;
+}
+
+message UserProfileResponse {
+  string email = 1;
+  string phone_number = 2;
+  int64 status = 3;
+  string error = 4;
+  
+
 }
 
 // Validate
