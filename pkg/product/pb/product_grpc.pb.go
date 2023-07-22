@@ -22,6 +22,8 @@ type ProductServiceClient interface {
 	FindOne(ctx context.Context, in *FindOneRequest, opts ...grpc.CallOption) (*FindOneResponse, error)
 	DecreaseStock(ctx context.Context, in *DecreaseStockRequest, opts ...grpc.CallOption) (*DecreaseStockResponse, error)
 	ListProducts(ctx context.Context, in *ListProductsRequest, opts ...grpc.CallOption) (*ListProductsResponse, error)
+	Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchReponse, error)
+	SortByPrice(ctx context.Context, in *SortByPriceRequest, opts ...grpc.CallOption) (*SortByPriceResponse, error)
 }
 
 type productServiceClient struct {
@@ -68,6 +70,24 @@ func (c *productServiceClient) ListProducts(ctx context.Context, in *ListProduct
 	return out, nil
 }
 
+func (c *productServiceClient) Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchReponse, error) {
+	out := new(SearchReponse)
+	err := c.cc.Invoke(ctx, "/product.ProductService/Search", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *productServiceClient) SortByPrice(ctx context.Context, in *SortByPriceRequest, opts ...grpc.CallOption) (*SortByPriceResponse, error) {
+	out := new(SortByPriceResponse)
+	err := c.cc.Invoke(ctx, "/product.ProductService/SortByPrice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServiceServer is the server API for ProductService service.
 // All implementations must embed UnimplementedProductServiceServer
 // for forward compatibility
@@ -76,6 +96,8 @@ type ProductServiceServer interface {
 	FindOne(context.Context, *FindOneRequest) (*FindOneResponse, error)
 	DecreaseStock(context.Context, *DecreaseStockRequest) (*DecreaseStockResponse, error)
 	ListProducts(context.Context, *ListProductsRequest) (*ListProductsResponse, error)
+	Search(context.Context, *SearchRequest) (*SearchReponse, error)
+	SortByPrice(context.Context, *SortByPriceRequest) (*SortByPriceResponse, error)
 	mustEmbedUnimplementedProductServiceServer()
 }
 
@@ -94,6 +116,12 @@ func (UnimplementedProductServiceServer) DecreaseStock(context.Context, *Decreas
 }
 func (UnimplementedProductServiceServer) ListProducts(context.Context, *ListProductsRequest) (*ListProductsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListProducts not implemented")
+}
+func (UnimplementedProductServiceServer) Search(context.Context, *SearchRequest) (*SearchReponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
+}
+func (UnimplementedProductServiceServer) SortByPrice(context.Context, *SortByPriceRequest) (*SortByPriceResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SortByPrice not implemented")
 }
 func (UnimplementedProductServiceServer) mustEmbedUnimplementedProductServiceServer() {}
 
@@ -180,6 +208,42 @@ func _ProductService_ListProducts_Handler(srv interface{}, ctx context.Context, 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ProductService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).Search(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/product.ProductService/Search",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).Search(ctx, req.(*SearchRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ProductService_SortByPrice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SortByPriceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServiceServer).SortByPrice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/product.ProductService/SortByPrice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServiceServer).SortByPrice(ctx, req.(*SortByPriceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ProductService_ServiceDesc is the grpc.ServiceDesc for ProductService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -202,6 +266,14 @@ var ProductService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListProducts",
 			Handler:    _ProductService_ListProducts_Handler,
+		},
+		{
+			MethodName: "Search",
+			Handler:    _ProductService_Search_Handler,
+		},
+		{
+			MethodName: "SortByPrice",
+			Handler:    _ProductService_SortByPrice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
