@@ -9,6 +9,8 @@ service ProductService {
   rpc FindOne(FindOneRequest) returns (FindOneResponse) {}
   rpc DecreaseStock(DecreaseStockRequest) returns (DecreaseStockResponse) {}
   rpc ListProducts(ListProductsRequest) returns (ListProductsResponse) {}
+  rpc Search(SearchRequest) returns (SearchReponse){}
+  rpc SortByPrice(SortByPriceRequest) returns (SortByPriceResponse){}
 }
 
 // CreateProduct
@@ -62,6 +64,30 @@ message DecreaseStockResponse {
 message ListProductsRequest {}
 
 message ListProductsResponse {
+  int64 status = 1;
+  string error = 2;
+  repeated FindOneData data = 3;
+}
+
+// Search
+
+message SearchRequest {
+  string search = 1;
+}
+
+message SearchReponse {
+  int64 status = 1;
+  string error = 2;
+  repeated FindOneData data = 3;
+}
+
+// SortByPrice
+
+message SortByPriceRequest {
+  bool sort = 1;
+}
+
+message SortByPriceResponse {
   int64 status = 1;
   string error = 2;
   repeated FindOneData data = 3;
