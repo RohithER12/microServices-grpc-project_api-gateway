@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "./pkg/cart/pb";
+
+service CartService {
+ 
+  rpc AddCart(AddCartRequest) returns (AddCartResponse){}
+  rpc RemoveCart(RemoveCartRequest) returns (RemoveCartResponse){}
+  rpc DisplayCart(DisplayCartRequest) returns (DisplayCartResponse){}
+
+}
+
+// AddCart
+
+message AddCartRequest {
+    int64 productId = 1;
+    int64 quantity = 2;
+    int64 userId = 3;
+}
+  
+message AddCartResponse {
+    int64 status = 1;
+    string error = 2;
+    // int64 id = 3;
+}
+  
+// remove cart
+
+message RemoveCartRequest {
+    int64 productId = 1;
+    int64 quantity = 2;
+    int64 userId = 3;
+}
+
+message RemoveCartResponse {
+    int64 status = 1;
+    string error = 2;
+}
+
+// DisplayCart
+
+message DisplayCartRequest {
+    int64 userId = 1;
+}
+
+message DisplayCartItem {
+    int64 productId = 1;
+    int64 quantity = 2;
+    string productName = 3;
+    int64 price = 4;
+    string error = 5;
+}
+
+message DisplayCartResponse {
+    repeated DisplayCartItem cartItems = 1;
+    int64 status = 2;
+    string error = 3;
+}

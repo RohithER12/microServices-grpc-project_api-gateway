@@ -1,6 +1,8 @@
 package product
 
 import (
+	"fmt"
+
 	"github.com/RohithER12/api-gateway/pkg/auth"
 	"github.com/RohithER12/api-gateway/pkg/config"
 	"github.com/RohithER12/api-gateway/pkg/product/routes"
@@ -19,12 +21,14 @@ func RegisterRoutes(r *gin.Engine, c *config.Config, authSvc *auth.ServiceClient
 	routes.POST("/", svc.CreateProduct)
 	routes.GET("/:id", svc.FindOne)
 	routes.GET("/products", svc.ListProducts)
-	routes.GET("/search:search", svc.Search)
-	routes.GET("/sortByPrice:sort", svc.SortByPrice)
+	routes.GET("/search", svc.Search)
+	routes.GET("/sortByPrice", svc.SortByPrice)
 
 }
 
 func (svc *ServiceClient) FindOne(ctx *gin.Context) {
+	fmt.Println("a search\t\thrrrre\t\tString\n\n\t\t")
+
 	routes.FineOne(ctx, svc.Client)
 }
 
@@ -37,6 +41,8 @@ func (svc *ServiceClient) ListProducts(ctx *gin.Context) {
 }
 
 func (svc *ServiceClient) Search(ctx *gin.Context) {
+	fmt.Println("a searchString\n\n\t\t")
+
 	routes.Search(ctx, svc.Client)
 }
 
